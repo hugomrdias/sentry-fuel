@@ -208,9 +208,10 @@ class Sentry_Group implements Iterator, ArrayAccess
 		try
 		{
 			// delete users groups
-			$delete_user_groups = DB::delete(static::$join_table)
+			// no need for this with FKs. if we do this it will cascade to the user an delete it
+			/*$delete_user_groups = DB::delete(static::$join_table)
 				->where('group_id', $this->group['id'])
-				->execute(static::$db_instance);
+				->execute(static::$db_instance);*/
 
 			// delete GROUP
 			$delete_user = DB::delete(static::$table)

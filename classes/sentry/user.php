@@ -423,7 +423,7 @@ class Sentry_User implements Iterator, ArrayAccess
 			$update['email'] = $fields['email'];
 			unset($fields['email']);
 		}
-		
+
 		// if updating username
 		if (array_key_exists('username', $fields) and
 			$fields['username'] != $this->user['username'])
@@ -539,7 +539,7 @@ class Sentry_User implements Iterator, ArrayAccess
 			$update_user = DB::update($this->table)
 				->set($update)
 				->join($this->table_metadata)->on($this->table_metadata.'.user_id', '=', $this->table.'.id')
-				->where('id', $this->user['id'])
+				->where($this->table.'.id', $this->user['id'])
 				->execute($this->db_instance);
 		}
 
@@ -1086,7 +1086,6 @@ class Sentry_User implements Iterator, ArrayAccess
 				$resource = $controller.$method;
 			}
 		}
-
 		// if it is in the config rules & not in the array rules, than we don't have access.
 		if (in_array($resource, $this->rules) and !in_array($resource, $this->permissions))
 		{
