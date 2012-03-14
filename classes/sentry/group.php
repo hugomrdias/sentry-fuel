@@ -203,15 +203,8 @@ class Sentry_Group implements Iterator, ArrayAccess
 			throw new \SentryGroupException(__('sentry.no_group_selected'));
 		}
 
-		DB::start_transaction();
-
 		try
 		{
-			// delete users groups
-			// no need for this with FKs. if we do this it will cascade to the user an delete it
-			/*$delete_user_groups = DB::delete(static::$join_table)
-				->where('group_id', $this->group['id'])
-				->execute(static::$db_instance);*/
 
 			// delete GROUP
 			$delete_user = DB::delete(static::$table)
@@ -219,11 +212,8 @@ class Sentry_Group implements Iterator, ArrayAccess
 				->execute(static::$db_instance);
 		}
 		catch(\Database_Exception $e) {
-			DB::rollback_transaction();
 			return false;
 		}
-
-		DB::commit_transaction();
 
 		// update user to null
 		$this->group = array();

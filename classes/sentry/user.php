@@ -582,31 +582,18 @@ class Sentry_User implements Iterator, ArrayAccess
 			throw new \SentryUserException(__('sentry.no_user_selected_to_delete'));
 		}
 
-		DB::start_transaction();
 
 		try
 		{
-			// delete users groups
-			$delete_user_groups = DB::delete($this->table_usergroups)
-				->where('user_id', $this->user['id'])
-				->execute($this->db_instance);
-
-			// delete users metadata
-			$delete_user_metadata = DB::delete($this->table_metadata)
-				->where('user_id', $this->user['id'])
-				->execute($this->db_instance);
-
 			// delete user from database
 			$delete_user = DB::delete($this->table)
 				->where('id', $this->user['id'])
 				->execute($this->db_instance);
 		}
 		catch(\Database_Exception $e) {
-			DB::rollback_transaction();
+
 			return false;
 		}
-
-		DB::commit_transaction();
 
 		// update user to null
 		$this->user = array();
