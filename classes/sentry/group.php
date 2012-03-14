@@ -373,7 +373,6 @@ class Sentry_Group implements Iterator, ArrayAccess
 
 		// grab the current group permissions & decode
 		$current_permissions = json_decode($this->get('permissions'), true);
-
 		/**
 		 * let's go through each of the $rules
 		 */
@@ -394,7 +393,7 @@ class Sentry_Group implements Iterator, ArrayAccess
 				}
 				elseif(is_array($current_permissions) and $val === 0 and Arr::key_exists($current_permissions, $key))
 				{
-					$current_permissions = Arr::delete($current_permissions, $key);
+					unset($current_permissions[$key]);
 				}
 			}
 			else
